@@ -1,0 +1,31 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.13.x, 1.14.x, 1.15.x]                    # run a wide swath of Go versions
+        platform: [ubuntu-16.04, macos-latest, ubuntu-latest]   # target multiple platforms
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v2   # checkout the repo
+      - name: Install Go
+        uses: actions/setup-go@v2   # setup the version of Go from the above matrix
+        with:
+          go-version: ${{ matrix.go-version }}
+      - uses: actions/cache@v2      # use cache to speed up builds with no changes to go.sum
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Make
+        env:
+          COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make ci
