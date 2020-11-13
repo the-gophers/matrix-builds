@@ -77,6 +77,6 @@ easier to test too.
 ## Lab Video
 TODO: record and post the first lab walking through this example
 
-
 ## Contributions
 Always welcome! Please open a PR or an issue, and remember to follow the [Gopher Code of Conduct](https://www.gophercon.com/page/1475132/code-of-conduct).
+
